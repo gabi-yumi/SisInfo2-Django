@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Buscar Livros</h2>
+  <form method="GET" action="{% url 'books:search' %}">
+    <input type="text" name="query" placeholder="Digite o título do livro" value="{{ request.GET.query }}">
+    <button type="submit">Buscar</button>
+  </form>
+
+  {% if book_list %}
+    <h3>Resultados para "{{ request.GET.query }}"</h3>
+    <section class="lista-de-cards">
+      {% for book in book_list %}
+        <article class="card">
+          <a href="{% url 'books:detail' book.id %}">
+            <img src="{{ book.poster_url }}" alt="Poster do livro {{ book.title }}" />
+          </a>
+          <p>{{ book.title }} ({{ book.release_year }})</p>
+          <a href="{% url 'books:edit_book' book.id %}">Editar</a>
+          <a href="{% url 'books:delete_book' book.id %}">Excluir</a>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <p>Nenhum livro encontrado para "{{ request.GET.query }}".</p>
+  {% endif %}
+{% endblock content %}
