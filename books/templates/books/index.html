@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Todos os Livros</h2>
+<section>
+  <p>
+    Muitos resultados? <a href="{% url 'books:search' %}">Buscar Livros</a>
+  </p>
+  <p>
+    Não encontrou o livro?
+    <a href="{% url 'books:create' %}">Adicionar Novo Livro</a>
+  </p>
+</section>
+
+{% if book_list %}
+<section class="lista-de-cards">
+  {% for book in book_list %}
+  <article class="card">
+    <a href="{% url 'books:detail' book.id %}">
+      <img src="{{ book.poster_url }}" alt="Poster do livro {{ book.title }}" />
+    </a>
+    <p>{{ book.title }} ({{ book.release_year }})</p>
+    <a href="{% url 'books:edit' book.id %}">Editar</a> 
+    <a href="{% url 'books:delete' book.id %}">Excluir</a> 
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<p>Não foi encontrado nenhum livro.</p>
+{% endif %}
+{% endblock content %}

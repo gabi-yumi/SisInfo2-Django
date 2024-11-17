@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Adicionar Comentário ao Livro {{ book.title }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Postar Comentário</button>
+  </form>
+  <a href="{% url 'books:detail' book.id %}">Cancelar</a>
+{% endblock content %}

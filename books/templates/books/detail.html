@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ book.title }} ({{ book.release_year }})
+{% endblock title %}
+
+{% block content %}
+  <h2>Detalhes do Livro {{ book.title }} ({{ book.release_year }})</h2>
+    
+  <section class="dados-de-livro">
+    <img src="{{ book.poster_url }}" alt="Poster do livro {{ book.title }}" />
+    <ul>
+      <li>Nome: {{ book.title }}</li>
+      <li>Ano de Lançamento: {{ book.release_year }}</li>
+      <li>Publicado em: {{ book.post_date|date:"d M Y H:i" }}</li>
+      <li>Resenha: {{ book.content }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Categorias</h3>
+    {% if book.categories.all %}
+        <ul>
+            {% for category in book.categories.all %}
+                <li><a href="{% url 'books:category_detail' category.id %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Este post não está em nenhuma categoria.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <a href="{% url 'books:edit' book.id %}">Editar</a>
+    <a href="{% url 'books:delete' book.id %}">Excluir</a>
+  </section>
+
+  <section>
+    <h3>Comentários</h3>
+    {% if comments %}
+      <ul>
+        {% for comment in comments %}
+          <li>
+            <strong>{{ comment.author }}:</strong> {{ comment.text }} <br>
+            <small>Postado em {{ comment.created_at|date:"d M Y H:i" }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Não há comentários.</p>
+    {% endif %}
+    <a href="{% url 'books:add_comment' book.id %}">Adicionar Comentário</a>
+  </section>
+{% endblock content %}
+
+
